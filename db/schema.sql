@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS departments, roles, employees;
 
 CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  emp_name VARCHAR(30) NOT NULL
+  dept_name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles (
