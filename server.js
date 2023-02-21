@@ -21,19 +21,6 @@ const db = mysql.createConnection(
   console.log(`Connected to the employees_db database.`)
 );
 
-
-//to do
-// start app -> prompts: 
-//view
-//  all depts
-//  all roles
-//  all employees
-//add
-//   a department
-//  a role
-//  an employee
-//update an employee role
-
 function startMenu () {
     inquirer.prompt({
             type: 'list',
@@ -69,7 +56,10 @@ function startMenu () {
 
 // choose all depts -> table w/ dept names & dept ids
 function viewDepts() {
-
+  db.query('SELECT * FROM departments', function (err, res) {
+    console.log(res);
+    startMenu();
+  })
 };
 // choose all roles -> table w/ job title, role id, dept, salary
 function viewRoles() {
