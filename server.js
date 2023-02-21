@@ -63,18 +63,33 @@ function viewDepts() {
 };
 // choose all roles -> table w/ job title, role id, dept, salary
 function viewRoles() {
-    
+  db.query('SELECT * FROM roles', function (err, res) {
+    console.log(res);
+    startMenu();
+  })
 };
 // choose all employees -> 
 // table w/ employee ids, first name, last name, job title, dept, salaries, managers
 function viewEmps () {
-
+  db.query('SELECT * FROM employees JOIN roles ON roles.id=employees.role_id ', function (err, res) {
+    console.log(res);
+    startMenu();
+  })
 };
 // choose add dept -> prompts:
 // enter name of dept
 // it is added to database
 function addDept () {
-
+  inquirer.prompt({
+    type: 'input',
+    name: 'dept_name',
+    message: 'Enter new department.'
+  }).then( answer => {
+      db.query('INSERT INTO departments (dept_name) VALUES (?)', function (err, res) {
+        console.log('Department has been added.');
+        viewDepts();
+      }) 
+  })
 };
 // choose add role -> prompts:
 // enter name of role
