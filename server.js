@@ -85,7 +85,7 @@ function addDept () {
     name: 'dept_name',
     message: 'Enter new department.'
   }).then( answer => {
-      db.query('INSERT INTO departments (dept_name) VALUES (?)', function (err, res) {
+      db.query('INSERT INTO departments (dept_name) VALUES (?)', answer.dept_name, function (err, res) {
         console.log('Department has been added.');
         viewDepts();
       }) 
@@ -97,7 +97,28 @@ function addDept () {
 // dept for that role
 // it is added to database
 function addRole () {
-
+  inquirer.prompt({
+    type: 'input',
+    name: 'title',
+    message: 'Enter new role title.'
+  },
+  {
+    type: 'input',
+    name: 'salary',
+    message: 'Enter salary.'
+  },
+  {
+    type: 'menu',
+    name: 'dept_id',
+    message: 'Choose department for role.',
+    choices: [1, 2, 3]
+  },
+  ).then( answer => {
+      db.query('INSERT INTO roles (title, salary, dept_id) VALUES (?)', answer.title, answer.salary, answer.dept_id, function (err, res) {
+        console.log('New role has been added.');
+        viewRoles();
+      }) 
+  })
 };
 // choose add employee -> prompts: 
 // enter first name
