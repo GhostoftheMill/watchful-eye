@@ -71,7 +71,7 @@ function viewRoles() {
 // choose all employees -> 
 // table w/ employee ids, first name, last name, job title, dept, salaries, managers
 function viewEmps () {
-  db.query('SELECT * FROM employees JOIN roles ON roles.id=employees.role_id ', function (err, res) {
+  db.query('SELECT * FROM employees JOIN roles ON roles.id=employees.role_id', function (err, res) {
     console.log(res);
     startMenu();
   })
@@ -127,114 +127,38 @@ function addRole () {
 // enter manager
 // it is added to database
 function addEmp () {
-
-};
+    inquirer.prompt({
+      type: 'input',
+      name: 'first_name',
+      message: `Enter employee's first name.`
+    },
+    {
+      type: 'input',
+      name: 'last_name',
+      message: `Enter employee's last name.`
+    },
+    {
+      type: 'menu',
+      name: 'role_id',
+      message: 'Choose role.',
+      choices: ['Leader', 'Support']
+    },
+    {
+      type: 'menu',
+      name: 'manager_id',
+      message: 'Assign manager. 1- Street Level, 2- Superhero, 3- Intergalatic',
+      choices: [1, 2, 3]
+    }
+    ).then( answer => {
+        db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)', answer.first_name, answer.last_name, answer.role_id, answer.manager_id, function (err, res) {
+          console.log('New employee has been added.');
+          viewEmps();
+        }) 
+    })
+  };
 // choose update employee role -> prompted to select employee to update and their role is updated
 function updateEmp () {
 
 };
 
 startMenu();
-
-//Code below here is from mini project, here as a reference for time being
-// Create a movie
-app.post('/api/new-movie', ({ body }, res) => {
-  const sql = `INSERT INTO movies (movie_name)
-    VALUES (?)`;
-  const params = [body.movie_name];
-  
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: 'success',
-      data: body
-    });
-  });
-});
-
-// Read all movies
-app.get('/api/movies', (req, res) => {
-  const sql = `SELECT id, movie_name AS title FROM movies`;
-  
-  db.query(sql, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-       return;
-    }
-    res.json({
-      message: 'success',
-      data: rows
-    });
-  });
-});
-
-// Delete a movie
-app.delete('/api/movie/:id', (req, res) => {
-  const sql = `DELETE FROM movies WHERE id = ?`;
-  const params = [req.params.id];
-  
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      res.statusMessage(400).json({ error: res.message });
-    } else if (!result.affectedRows) {
-      res.json({
-      message: 'Movie not found'
-      });
-    } else {
-      res.json({
-        message: 'deleted',
-        changes: result.affectedRows,
-        id: req.params.id
-      });
-    }
-  });
-});
-
-// Read list of all reviews and associated movie name using LEFT JOIN
-app.get('/api/movie-reviews', (req, res) => {
-  const sql = `SELECT movies.movie_name AS movie, reviews.review FROM reviews LEFT JOIN movies ON reviews.movie_id = movies.id ORDER BY movies.movie_name;`;
-  db.query(sql, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: 'success',
-      data: rows
-    });
-  });
-});
-
-// BONUS: Update review name
-app.put('/api/review/:id', (req, res) => {
-  const sql = `UPDATE reviews SET review = ? WHERE id = ?`;
-  const params = [req.body.review, req.params.id];
-
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-    } else if (!result.affectedRows) {
-      res.json({
-        message: 'Movie not found'
-      });
-    } else {
-      res.json({
-        message: 'success',
-        data: req.body,
-        changes: result.affectedRows
-      });
-    }
-  });
-});
-
-// Default response for any other request (Not Found)
-app.use((req, res) => {
-  res.status(404).end();
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
