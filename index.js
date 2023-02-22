@@ -158,7 +158,24 @@ function addEmp () {
   };
 // choose update employee role -> prompted to select employee to update and their role is updated
 function updateEmp () {
-
+  inquirer.prompt({
+        name: "first_name",
+        type: "input",
+        message: "Enter first name of employee to update."
+    },
+    {
+        name: "role_id",
+        type: "number",
+        message: "Enter new role. 1- Street Level, Leader. 2-Street Level, Support, 3- Superhero, Leader, 4- Superhero, Support, 5- Intergalatic, Leader, 6- Intergalatic, Support."
+    }
+    ).then(function (answer) {
+    db.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [answer.role_id, answer.first_name], function (err, data) {
+        console.log('Employee updated successfully.');
+        viewEmps();
+        startMenu();
+        });
+    })
 };
+
 
 startMenu();
