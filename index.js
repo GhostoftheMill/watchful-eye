@@ -150,7 +150,7 @@ function addEmp () {
       choices: [1, 2, 3]
     }
     ).then( answer => {
-        db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?)', answer.first_name, answer.last_name, answer.role_id, answer.manager_id, function (err, res) {
+        db.query('INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?)', answer.first_name, answer.last_name, answer.role_id, answer.manager_id, function (err, res) {
           console.log('New employee has been added.');
           viewEmps();
         }) 
@@ -179,3 +179,9 @@ function updateEmp () {
 
 
 startMenu();
+
+
+//Not currently working:
+//Add a role
+//Add an employee
+//Update an employee
