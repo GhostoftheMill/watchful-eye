@@ -1,6 +1,6 @@
 # Employee Tracker
 
-<img src="./assets/screenshot.jpg">
+<img src="./img/screenshot.jpg" width="60%" height="60%">
 
 ## Description
 
